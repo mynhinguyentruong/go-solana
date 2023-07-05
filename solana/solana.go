@@ -12,6 +12,24 @@ import (
 	"net/http"
 )
 
+type Body struct {
+	Jsonrpc string   `json:"jsonrpc"`
+	ID      int64    `json:"id"`
+	Method  string   `json:"method"`
+	Params  []string `json:"params"`
+}
+
+type ResponseBody struct {
+	Jsonrpc string `json:"jsonrpc"`
+	Result  Result `json:"result"`
+	ID      int64  `json:"id"`
+}
+
+type Result struct {
+	Context interface{} `json:"context"`
+	Value   int64       `json:"value"`
+}
+
 // global variable
 var rpc_cluster = ""
 
@@ -29,24 +47,6 @@ func Connect(s string) error {
 	default:
 		return errors.New("Invalid argument provided")
 	}
-}
-
-type Body struct {
-	Jsonrpc string   `json:"jsonrpc"`
-	ID      int64    `json:"id"`
-	Method  string   `json:"method"`
-	Params  []string `json:"params"`
-}
-
-type ResponseBody struct {
-	Jsonrpc string `json:"jsonrpc"`
-	Result  Result `json:"result"`
-	ID      int64  `json:"id"`
-}
-
-type Result struct {
-	Context interface{} `json:"context"`
-	Value   int64       `json:"value"`
 }
 
 // solana.GetBalance("5CXH8Kqhh6f9Gee6GUfsc7VVCbDSSN2NU2x1WyEdNyic")

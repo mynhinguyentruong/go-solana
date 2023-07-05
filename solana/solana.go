@@ -22,12 +22,12 @@ type Body struct {
 type ResponseBody struct {
 	Jsonrpc string `json:"jsonrpc"`
 	Result  Result `json:"result"`
-	ID      int64  `json:"id"`
+	ID      uint64 `json:"id"`
 }
 
 type Result struct {
 	Context interface{} `json:"context"`
-	Value   int64       `json:"value"`
+	Value   uint64      `json:"value"`
 }
 
 // global variable
@@ -50,26 +50,26 @@ func Connect(s string) error {
 }
 
 // solana.GetBalance("5CXH8Kqhh6f9Gee6GUfsc7VVCbDSSN2NU2x1WyEdNyic")
-func GetBalance(s string) (ResponseBody, error) {
+func GetBalance(s string) (uint64, error) {
 	var a = Body{"2.0", 1, "getBalance", []string{s}}
 	jsonBody, err := json.Marshal(&a)
 	if err != nil {
 		fmt.Println("a ...any")
-		return ResponseBody{}, err
+		return 0, err
 	}
 
 	resp, err := http.Post(rpc_cluster, "application/json", bytes.NewBuffer(jsonBody))
 	if err != nil {
 		fmt.Println("error")
-		return ResponseBody{}, err
+		return 0, err
 	}
 
 	var r ResponseBody
 	responseBody, err := ioutil.ReadAll(resp.Body)
 	if err := json.Unmarshal(responseBody, &r); err != nil {
 		fmt.Println("erorr")
-		return ResponseBody{}, err
+		return 0, err
 	}
 
-	return r, nil
+	return r.Result.Value, nil
 }

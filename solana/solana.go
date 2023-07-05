@@ -7,12 +7,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
-type Body struct {
+type RequestBody struct {
 	Jsonrpc string   `json:"jsonrpc"`
 	ID      int64    `json:"id"`
 	Method  string   `json:"method"`
@@ -33,8 +32,6 @@ type Result struct {
 // global variable
 var rpc_cluster = ""
 
-// err := solana.Connect("")
-// if err != nil, do something
 func Connect(s string) error {
 	myPointer := &rpc_cluster
 	switch s {
@@ -51,23 +48,20 @@ func Connect(s string) error {
 
 // solana.GetBalance("5CXH8Kqhh6f9Gee6GUfsc7VVCbDSSN2NU2x1WyEdNyic")
 func GetBalance(s string) (uint64, error) {
-	var a = Body{"2.0", 1, "getBalance", []string{s}}
+	var a = RequestBody{"2.0", 1, "getBalance", []string{s}}
 	jsonBody, err := json.Marshal(&a)
 	if err != nil {
-		fmt.Println("a ...any")
 		return 0, err
 	}
 
 	resp, err := http.Post(rpc_cluster, "application/json", bytes.NewBuffer(jsonBody))
 	if err != nil {
-		fmt.Println("error")
 		return 0, err
 	}
 
 	var r ResponseBody
 	responseBody, err := ioutil.ReadAll(resp.Body)
 	if err := json.Unmarshal(responseBody, &r); err != nil {
-		fmt.Println("erorr")
 		return 0, err
 	}
 

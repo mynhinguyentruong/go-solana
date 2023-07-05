@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	if err := solana.Connect("devnet"); err != nil {
+	if err := solana.Connect("mainnet"); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("Successfully connect")
@@ -16,8 +16,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("asdasdasd: ", returnValue.Result.Value)
-	fmt.Println("asdasdasd: ", returnValue.Result.Value)
-	fmt.Println("asdasdasd: ", returnValue.Result.Value)
+	balance := float64(returnValue) / 1000000000
+
+	fmt.Printf("The current balance is: %f SOL", balance)
 
 }

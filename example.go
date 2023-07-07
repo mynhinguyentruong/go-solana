@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	if err := solana.Connect("mainnet"); err != nil {
+	if err := solana.Connect("devnet"); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("Successfully connect")

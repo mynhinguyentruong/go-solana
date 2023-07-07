@@ -1,6 +1,3 @@
-// solana.GetBalance
-// solana.Connect("devnet")
-// solana.Connect("mainnet")
 package solana
 
 import (
@@ -46,7 +43,6 @@ func Connect(s string) error {
 	}
 }
 
-// solana.GetBalance("5CXH8Kqhh6f9Gee6GUfsc7VVCbDSSN2NU2x1WyEdNyic")
 func GetBalance(s string) (uint64, error) {
 	var a = RequestBody{"2.0", 1, "getBalance", []string{s}}
 	jsonBody, err := json.Marshal(&a)

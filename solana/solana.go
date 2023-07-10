@@ -63,3 +63,7 @@ func GetBalance(s string) (uint64, error) {
 
 	return r.Result.Value, nil
 }
+
+func GetLatestBlockHash() uint64 {
+	return 0
+}

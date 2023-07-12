@@ -20,4 +20,6 @@ func main() {
 
 	fmt.Printf("The current balance is: %f SOL", balance)
 
+	solana.GetAccountInfo()
+	// fmt.Printf("a: %v", a)
 }

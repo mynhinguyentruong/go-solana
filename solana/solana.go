@@ -35,11 +35,13 @@ type GetLatestBlockHashResponse struct {
 }
 
 type GetLatestBlockHashResult struct {
-	Context interface{} `json:"context"`
-	Value   struct {
-		Blockhash            string `json:"blockhash"`
-		LastValidBlockHeight uint64 `json:"lastValidBlockHeight"`
-	}
+	Context interface{}             `json:"context"`
+	Value   GetLatestBlockHashValue `json:"value"`
+}
+
+type GetLatestBlockHashValue struct {
+	Blockhash            string `json:"blockhash"`
+	LastValidBlockHeight uint64 `json:"lastValidBlockHeight"`
 }
 
 // global variable
@@ -86,11 +88,11 @@ type ParamsOpt struct {
 	Commitment string `json:"commitment"`
 }
 
-func GetLatestBlockHash() uint64 {
+func GetAccountInfo() uint64 {
 	return 0
 }
 
-func GetAccountInfo() {
+func GetLatestBlockHash() GetLatestBlockHashValue {
 	a := RequestBody{"2.0", 1, "getLatestBlockhash", []ParamsOpt{
 		{"processed"},
 	}}
@@ -117,4 +119,7 @@ func GetAccountInfo() {
 	}
 
 	fmt.Printf("Data: %v", r)
+
+	return r.Result.Value
+
 }

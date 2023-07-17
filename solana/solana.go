@@ -14,7 +14,7 @@ type RequestBody struct {
 	Jsonrpc string      `json:"jsonrpc"`
 	ID      int64       `json:"id"`
 	Method  string      `json:"method"`
-	Params  []ParamsOpt `json:"params"`
+	Params  interface{} `json:"params"`
 }
 
 type ResponseBody struct {
@@ -62,9 +62,7 @@ func Connect(s string) error {
 }
 
 func GetBalance(s string) (uint64, error) {
-	var a = RequestBody{"2.0", 1, "getBalance", []ParamsOpt{
-		{"processed"},
-	}}
+	var a = RequestBody{"2.0", 1, "getBalance", []string{s}}
 	jsonBody, err := json.Marshal(&a)
 	if err != nil {
 		return 0, err

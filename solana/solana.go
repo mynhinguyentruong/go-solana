@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
+	"strings"
 )
 
 type RequestBody struct {
@@ -44,6 +45,12 @@ type GetLatestBlockHashValue struct {
 	LastValidBlockHeight uint64 `json:"lastValidBlockHeight"`
 }
 
+type RequestAirdropResponse struct {
+  Jsonrpc string `json:"jsonrpc"`
+  Result string `json:"result"`
+  ID uint64 `json:"id"` 
+}
+
 // global variable
 var rpc_cluster = ""
 
@@ -57,7 +64,7 @@ func Connect(s string) error {
 		*myPointer = "https://api.mainnet-beta.solana.com"
 		return nil
 	default:
-		return errors.New("Invalid argument provided")
+		return errors.New("invalid argument provided")
 	}
 }
 
@@ -74,7 +81,7 @@ func GetBalance(s string) (uint64, error) {
 	}
 
 	var r ResponseBody
-	responseBody, err := ioutil.ReadAll(resp.Body)
+	responseBody, _:= io.ReadAll(resp.Body)
 	if err := json.Unmarshal(responseBody, &r); err != nil {
 		return 0, err
 	}
@@ -105,7 +112,7 @@ func GetLatestBlockHash() GetLatestBlockHashValue {
 		log.Fatal("sdasd")
 	}
 
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal("asdasdad")
 	}
@@ -116,8 +123,61 @@ func GetLatestBlockHash() GetLatestBlockHashValue {
 		fmt.Println("Cannot unmarshal")
 	}
 
-	fmt.Printf("Data: %v", r)
-
 	return r.Result.Value
+}
 
+  // {
+  //   "jsonrpc": "2.0", "id": 1,
+  //   "method": "requestAirdrop",
+  //   "params": [
+  //     "83astBRguLMdt2h5U1Tpdq5tjFoJ6noeGwaY3mDLVcri",
+  //     1000000000
+  //   ]
+  // }
+
+type RequestAirdropParams struct {
+  Jsonrpc string `json:"jsonrpc"`
+  ID uint64 `json:"id"`
+  Method string `json:"method"`
+  Params []interface{} `json:"params"`
+}
+
+func RequestAirdrop(id uint64, pubkey string, lamport uint64) (RequestAirdropResponse, error) {
+  var params []interface{}
+  params = append(params, pubkey, lamport)
+  args := RequestAirdropParams{"2.0", id, "requestAirdrop", params}
+  
+  requestBody, err := json.Marshal(args)
+  if err != nil {
+    log.Fatalf("Error when trying to marshal req body in request airdrop")
+  }
+
+  resp, err := http.Post(rpc_cluster, "application/json", bytes.NewBuffer(requestBody))
+  if err != nil {
+    log.Fatalf("Somethign went wrong in the post request: %v", err)
+  }
+
+  data, err:= io.ReadAll(resp.Body)
+  if err != nil {
+    log.Fatalf("Something went wrong, error: %v", err)
+  }
+
+  var response RequestAirdropResponse 
+  err = json.Unmarshal(data, &response)
+  if err != nil {
+    log.Fatalf("Something went wrong, error: %v", err)
+  }
+
+  stringReader := strings.NewReader("Some string, this method turn string into bytes")
+  
+  fmt.Printf("String reader: %v %T", stringReader, stringReader)
+  b, _ := io.ReadAll(stringReader)
+
+  integer, _ := stringReader.Read(b)
+
+  fmt.Printf("b: %v %s %T", b,b,b)
+  fmt.Printf("integer: %v", integer)
+
+
+  return response, nil
 }

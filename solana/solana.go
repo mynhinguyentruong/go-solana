@@ -54,8 +54,22 @@ type RequestAirdropResponse struct {
 // global variable
 var rpc_cluster = ""
 
+const (
+  devnet = "https://api.devnet.solana.com" 
+  testnet = "https://api.mainnet-beta.solana.com" 
+)
+
+func isConnectedToValidRpc() error {
+  if rpc_cluster == devnet || rpc_cluster == testnet {
+    return nil
+  }
+
+  return errors.New("initiate rpc cluster before making request")
+}
+
 func Connect(s string) error {
 	myPointer := &rpc_cluster
+
 	switch s {
 	case "devnet":
 		*myPointer = "https://api.devnet.solana.com"
@@ -69,7 +83,11 @@ func Connect(s string) error {
 }
 
 func GetBalance(s string) (uint64, error) {
-	var a = RequestBody{"2.0", 1, "getBalance", []string{s}}
+  if err := isConnectedToValidRpc(); err != nil {
+    log.Fatalf("Failed to make request, initiate a rpc_cluster first")
+  }
+
+  var a = RequestBody{"2.0", 1, "getBalance", []string{s}}
 	jsonBody, err := json.Marshal(&a)
 	if err != nil {
 		return 0, err
@@ -94,11 +112,19 @@ type ParamsOpt struct {
 }
 
 func GetAccountInfo() uint64 {
+  if err := isConnectedToValidRpc(); err != nil {
+    log.Fatalf("Failed to make request, initiate a rpc_cluster first")
+  }
+
 	return 0
 }
 
 func GetLatestBlockHash() GetLatestBlockHashValue {
-	a := RequestBody{"2.0", 1, "getLatestBlockhash", []ParamsOpt{
+  if err := isConnectedToValidRpc(); err != nil {
+    log.Fatalf("Failed to make request, initiate a rpc_cluster first")
+  }
+
+  a := RequestBody{"2.0", 1, "getLatestBlockhash", []ParamsOpt{
 		{"processed"},
 	}}
 
@@ -143,6 +169,10 @@ type RequestAirdropParams struct {
 }
 
 func RequestAirdrop(id uint64, pubkey string, lamport uint64) (RequestAirdropResponse, error) {
+  if err := isConnectedToValidRpc(); err != nil {
+    log.Fatalf("Failed to make request, initiate a rpc_cluster first")
+  }
+	
   var params []interface{}
   params = append(params, pubkey, lamport)
   args := RequestAirdropParams{"2.0", id, "requestAirdrop", params}

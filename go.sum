@@ -1,2 +1,6 @@
-github.com/mynhinguyentruong/go-solana/solana v0.0.0-20230712154030-979fe68f2164 h1:6ALTW8V23IqyJz8pB5lm+cNRyG83fap5lzBDi4IhVt8=
-github.com/mynhinguyentruong/go-solana/solana v0.0.0-20230712154030-979fe68f2164/go.mod h1:jfx6tcSZtiZ/t27DPjPT3C2ELwTBvEFpfXp9BMUvfNE=
+github.com/mr-tron/base58 v1.2.0 h1:T/HDJBh4ZCPbU39/+c3rRvE0uKBQlU27+QI8LJ4t64o=
+github.com/mr-tron/base58 v1.2.0/go.mod h1:BinMc/sQntlIE1frQmRFPUoPA1Zkr8VRgBdjWI2mNwc=
+github.com/mynhinguyentruong/go-solana/solana v0.0.0-20230717185408-8ab884dcd1b1 h1:O/uoZ8u63kOrYgtKSnBqDmjYw+nryJCUcDsW4J/W0f8=
+github.com/mynhinguyentruong/go-solana/solana v0.0.0-20230717185408-8ab884dcd1b1/go.mod h1:jfx6tcSZtiZ/t27DPjPT3C2ELwTBvEFpfXp9BMUvfNE=
+github.com/mynhinguyentruong/go-solana/solana v0.0.0-20230902143759-3a31d3685b75 h1:15Ui3zKKVmBdZt4fCOZRQ+vPhDc49rXz7KzITRt6qjc=
+github.com/mynhinguyentruong/go-solana/solana v0.0.0-20230902143759-3a31d3685b75/go.mod h1:jfx6tcSZtiZ/t27DPjPT3C2ELwTBvEFpfXp9BMUvfNE=

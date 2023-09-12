@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+  // "github.com/mr-tron/base58"
 )
 
 type RequestBody struct {
@@ -211,3 +212,37 @@ func RequestAirdrop(id uint64, pubkey string, lamport uint64) (RequestAirdropRes
 
   return response, nil
 }
+
+type PublicKey [32]byte
+
+type Instruction struct {
+  ProgramID uint16
+  Accounts []uint16
+  InstructionData []byte
+}
+
+type Address [32]byte
+
+type Message struct {
+  Header []byte // contains three unsigned 8-bit values
+  
+  Addresses Address   
+  // read-write accounts first
+  // read-only accounts following
+
+  RecentBlockhash [32]byte
+  Instructions []Instruction
+}
+
+type Signature [64]byte
+
+type Transaction struct {
+  Signatures []Signature 
+  Message Message
+}
+
+// How to serialize instruction data on the client
+
+// Build instruction payload
+// Serialize instruction payload
+
